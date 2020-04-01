@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
-    public GameObject hazard;
+    public GameObject[] hazards;
     public Vector3 spawnValues;
     public int hazardCount;
     public float spawnWait;
@@ -16,6 +16,7 @@ public class GameController : MonoBehaviour
     public Text ScoreText;
     public Text RestartText;
     public Text GameOverText;
+    public Text winText;
     private bool Gameover;
     private bool Restart;
     private int score;
@@ -26,6 +27,7 @@ public class GameController : MonoBehaviour
         Restart = false;
         GameOverText.text = "";
         RestartText.text = "";
+        winText.text = "";
         score = 0;
         UpdateScore();
         StartCoroutine(SpawnWaves());
@@ -35,7 +37,7 @@ public class GameController : MonoBehaviour
     {
         if (Restart)
         {
-            if(Input.GetKeyDown(KeyCode.R))
+            if(Input.GetKeyDown(KeyCode.Z))
             {
                 SceneManager.LoadScene("Main");
             }
@@ -53,6 +55,7 @@ public class GameController : MonoBehaviour
         {
             for (int i = 0; i < hazardCount; i++)
             {
+                GameObject hazard = hazards[Random.Range(0, hazards.Length)];
                 Vector3 spawnPosition = new Vector3(Random.Range(-spawnValues.x, spawnValues.x), spawnValues.y, spawnValues.z);
                 Quaternion spawnRotation = Quaternion.identity;
                 Instantiate(hazard, spawnPosition, spawnRotation);
@@ -62,7 +65,7 @@ public class GameController : MonoBehaviour
 
             if(Gameover)
             {
-                RestartText.text = "Press R for Restart";
+                RestartText.text = "Press Z for Restart";
                 Restart = true;
                 break;
             }
@@ -77,12 +80,18 @@ public class GameController : MonoBehaviour
 
     void UpdateScore()
     {
-        ScoreText.text = "Score: " + score;
+        ScoreText.text = "Points: " + score;
+        if (score >= 100)
+        {
+            winText.text = "You win! Game Created by Curtis Marcoux";
+            Gameover = true;
+            Restart = true;
+        }
     }
 
     public void GameOver ()
     {
-        GameOverText.text = "Game Over";
+        GameOverText.text = "Game Over Game Created by Curtis Marcoux";
         Gameover = true;
     }
 }
