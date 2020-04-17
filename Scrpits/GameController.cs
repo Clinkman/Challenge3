@@ -12,11 +12,17 @@ public class GameController : MonoBehaviour
     public float spawnWait;
     public float startWait;
     public float waveWait;
+    public AudioSource musicSource1;
+    public AudioClip Victory;
+    public AudioSource musicSource2;
+    public AudioClip Dead;
+    public int number;
 
     public Text ScoreText;
     public Text RestartText;
     public Text GameOverText;
     public Text winText;
+    public Text Timer;
     private bool Gameover;
     private bool Restart;
     private int score;
@@ -67,6 +73,10 @@ public class GameController : MonoBehaviour
             {
                 RestartText.text = "Press Z for Restart";
                 Restart = true;
+                if (Timer.text == "0")
+                {
+                    GameOverText.text = "Your final score is " + score;
+                }
                 break;
             }
         }
@@ -81,9 +91,24 @@ public class GameController : MonoBehaviour
     void UpdateScore()
     {
         ScoreText.text = "Points: " + score;
-        if (score >= 100)
+        if (score >= 100 && number != 5 && number !=3)
         {
             winText.text = "You win! Game Created by Curtis Marcoux";
+            Gameover = true;
+            Restart = true;
+            musicSource1.clip = Victory;
+            musicSource1.Play();
+        }
+        if (score >= 250 && number == 3)
+        {
+            winText.text = "You win! Game Created by Curtis Marcoux";
+            Gameover = true;
+            Restart = true;
+            musicSource1.clip = Victory;
+            musicSource1.Play();
+        }
+        if (Timer.text == "0")
+        {
             Gameover = true;
             Restart = true;
         }
@@ -93,5 +118,7 @@ public class GameController : MonoBehaviour
     {
         GameOverText.text = "Game Over Game Created by Curtis Marcoux";
         Gameover = true;
+        musicSource2.clip = Dead;
+        musicSource2.Play();
     }
 }

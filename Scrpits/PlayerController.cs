@@ -36,6 +36,10 @@ public class PlayerController : MonoBehaviour
             musicSource.clip = fireL;
             musicSource.Play();
         }
+        if (Input.GetKey("escape"))
+        {
+            Application.Quit();
+        }
     }
 
     void FixedUpdate()
